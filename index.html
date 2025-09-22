@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SafeGuard AI - Fraud Detection System</title>
+    <title>SafeGuard AI - India's First 360° AI-Powered Fraud Detection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -11,12 +12,26 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #7209b7;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #fca311;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gradient: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            --gradient-alt: linear-gradient(135deg, #7209b7 0%, #4361ee 100%);
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--dark);
+            background: var(--gradient);
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         .container {
@@ -29,21 +44,59 @@
             text-align: center;
             color: white;
             margin-bottom: 40px;
-            padding: 40px 0;
+            padding: 60px 0 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.1);
+            z-index: 0;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
         }
 
         .header h1 {
             font-size: 3.5rem;
             font-weight: 800;
             margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
         }
 
         .header p {
             font-size: 1.3rem;
-            opacity: 0.9;
+            opacity: 0.95;
             max-width: 800px;
-            margin: 0 auto;
+            margin: 0 auto 30px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--warning);
+            color: var(--dark);
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            background: #ffb700;
         }
 
         .content-grid {
@@ -61,6 +114,18 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             border: 1px solid rgba(255,255,255,0.2);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--primary);
         }
 
         .card:hover {
@@ -69,7 +134,7 @@
         }
 
         .card h2 {
-            color: #2d3748;
+            color: var(--secondary);
             margin-bottom: 20px;
             font-size: 1.8rem;
             font-weight: 700;
@@ -79,31 +144,54 @@
         }
 
         .icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
+            background: var(--gradient);
+            color: white;
         }
 
-        .problem .icon { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
-        .solution .icon { background: linear-gradient(135deg, #4ecdc4, #44bd32); }
-        .tech .icon { background: linear-gradient(135deg, #a55eea, #8c7ae6); }
-        .benefits .icon { background: linear-gradient(135deg, #feca57, #ff9ff3); }
+        .problem .icon { background: linear-gradient(135deg, var(--danger), #b5179e); }
+        .solution .icon { background: linear-gradient(135deg, var(--success), #4895ef); }
+        .tech .icon { background: linear-gradient(135deg, var(--accent), var(--secondary)); }
+        .benefits .icon { background: linear-gradient(135deg, var(--warning), #fb5607); }
 
         .full-width {
             grid-column: 1 / -1;
         }
 
-        .team-section {
+        .team-section, .timeline, .demo-section, .comparison-section {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 40px;
             margin: 40px 0;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            text-align: center;
+            color: var(--secondary);
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
         }
 
         .team-grid {
@@ -114,7 +202,7 @@
         }
 
         .team-member {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: var(--gradient-alt);
             color: white;
             padding: 30px;
             border-radius: 15px;
@@ -176,23 +264,7 @@
             content: '⚡';
             position: absolute;
             left: 0;
-            color: #ffd700;
-        }
-
-        .timeline {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            margin: 40px 0;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-
-        .timeline h2 {
-            text-align: center;
-            color: #2d3748;
-            margin-bottom: 30px;
-            font-size: 2.2rem;
+            color: var(--warning);
         }
 
         .timeline-item {
@@ -202,11 +274,11 @@
             padding: 20px;
             background: linear-gradient(90deg, #f8f9fa, #e9ecef);
             border-radius: 15px;
-            border-left: 5px solid #667eea;
+            border-left: 5px solid var(--primary);
         }
 
         .timeline-time {
-            background: #667eea;
+            background: var(--primary);
             color: white;
             padding: 10px 20px;
             border-radius: 25px;
@@ -217,17 +289,8 @@
         }
 
         .timeline-content h3 {
-            color: #2d3748;
+            color: var(--secondary);
             margin-bottom: 5px;
-        }
-
-        .demo-section {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-            color: white;
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-            margin: 40px 0;
         }
 
         .demo-features {
@@ -238,10 +301,22 @@
         }
 
         .demo-feature {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(67, 97, 238, 0.1);
             padding: 20px;
             border-radius: 15px;
-            backdrop-filter: blur(10px);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .demo-feature:hover {
+            transform: translateY(-5px);
+            background: rgba(67, 97, 238, 0.15);
+        }
+
+        .demo-feature i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
         }
 
         .stats {
@@ -252,11 +327,16 @@
         }
 
         .stat-card {
-            background: linear-gradient(135deg, #4ecdc4, #44bd32);
+            background: var(--gradient);
             color: white;
             padding: 25px;
             border-radius: 15px;
             text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
         }
 
         .stat-number {
@@ -268,6 +348,79 @@
         .stat-label {
             font-size: 0.9rem;
             opacity: 0.9;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .comparison-table th {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .checkmark {
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .crossmark {
+            color: var(--danger);
+            font-weight: bold;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .feature-item {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .feature-item i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 40px 0;
+            margin-top: 40px;
         }
 
         @media (max-width: 768px) {
@@ -282,13 +435,23 @@
             .team-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .timeline-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .timeline-time {
+                margin-bottom: 10px;
+                margin-right: 0;
+            }
         }
 
         .highlight {
-            background: linear-gradient(90deg, #ffd700, #ffed4e);
+            background: linear-gradient(90deg, var(--warning), #ffed4e);
             padding: 2px 8px;
             border-radius: 5px;
-            color: #333;
+            color: var(--dark);
             font-weight: 600;
         }
 
@@ -307,49 +470,58 @@
             font-weight: 600;
             color: #495057;
             border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .tech-item:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header class="header">
-            <h1>🛡️ SafeGuard AI</h1>
-            <p>India's First 360° AI-Powered Fraud Detection System<br>
-            <span class="highlight">The "Truecaller for All Frauds"</span></p>
+            <div class="header-content">
+                <h1><i class="fas fa-shield-alt"></i> SafeGuard AI</h1>
+                <p>India's First 360° AI-Powered Fraud Detection System<br>
+                <span class="highlight">The "Truecaller for All Frauds" - Better, Stronger, Future-Ready</span></p>
+                <a href="#demo" class="cta-button">See Live Demo</a>
+            </div>
         </header>
 
         <div class="content-grid">
             <div class="card problem">
-                <h2><span class="icon">🚨</span>The Problem</h2>
+                <h2><span class="icon"><i class="fas fa-exclamation-triangle"></i></span>The Problem</h2>
                 <ul style="list-style: none; padding: 0;">
-                    <li>💰 India loses <strong>₹1000+ crores annually</strong> to digital fraud</li>
-                    <li>📱 UPI scams, fake QR codes, phishing SMS increasing rapidly</li>
-                    <li>🏦 Current solutions work in <strong>silos</strong> (Truecaller, bank alerts)</li>
-                    <li>🌐 No unified defense against multi-channel scam operations</li>
-                    <li>⚖️ Law enforcement lacks proper digital evidence</li>
+                    <li><i class="fas fa-rupee-sign"></i> India loses <strong>₹1000+ crores annually</strong> to digital fraud</li>
+                    <li><i class="fas fa-mobile-alt"></i> UPI scams, fake QR codes, phishing SMS increasing rapidly</li>
+                    <li><i class="fas fa-sitemap"></i> Current solutions work in <strong>silos</strong> (Truecaller, bank alerts)</li>
+                    <li><i class="fas fa-globe"></i> No unified defense against multi-channel scam operations</li>
+                    <li><i class="fas fa-gavel"></i> Law enforcement lacks proper digital evidence</li>
                 </ul>
             </div>
 
             <div class="card solution">
-                <h2><span class="icon">💡</span>Our Solution</h2>
+                <h2><span class="icon"><i class="fas fa-lightbulb"></i></span>Our Solution</h2>
                 <ul style="list-style: none; padding: 0;">
-                    <li>🤖 <strong>AI-Powered Detection:</strong> NLP + Computer Vision + Anomaly Detection</li>
-                    <li>⛓️ <strong>Blockchain Registry:</strong> Tamper-proof fraud database</li>
-                    <li>🌍 <strong>360° Protection:</strong> SMS, Calls, UPI, QR, Apps, Websites</li>
-                    <li>👥 <strong>Community Intelligence:</strong> Crowdsourced fraud reporting</li>
-                    <li>🔄 <strong>Cross-Platform:</strong> Works across banks, telcos, wallets</li>
+                    <li><i class="fas fa-robot"></i> <strong>AI-Powered Detection:</strong> NLP + Computer Vision + Anomaly Detection</li>
+                    <li><i class="fas fa-link"></i> <strong>Blockchain Registry:</strong> Tamper-proof fraud database</li>
+                    <li><i class="fas fa-shield-alt"></i> <strong>360° Protection:</strong> SMS, Calls, UPI, QR, Apps, Websites</li>
+                    <li><i class="fas fa-users"></i> <strong>Community Intelligence:</strong> Crowdsourced fraud reporting</li>
+                    <li><i class="fas fa-sync-alt"></i> <strong>Cross-Platform:</strong> Works across banks, telcos, wallets</li>
                 </ul>
             </div>
 
             <div class="card tech full-width">
-                <h2><span class="icon">⚙️</span>Technical Architecture</h2>
+                <h2><span class="icon"><i class="fas fa-cogs"></i></span>Technical Architecture</h2>
                 <div class="tech-stack">
-                    <div class="tech-item">🧠 AI/ML Engine<br><small>NLP, Computer Vision, Anomaly Detection</small></div>
-                    <div class="tech-item">⛓️ Blockchain<br><small>Hyperledger / Polygon Edge</small></div>
-                    <div class="tech-item">📱 Mobile App<br><small>React Native / Flutter</small></div>
-                    <div class="tech-item">🌐 Web Dashboard<br><small>React / Vue.js</small></div>
-                    <div class="tech-item">☁️ Cloud Infrastructure<br><small>AWS / GCP / Azure</small></div>
-                    <div class="tech-item">🔒 Security APIs<br><small>Threat Intelligence Integration</small></div>
+                    <div class="tech-item"><i class="fas fa-brain"></i> AI/ML Engine<br><small>NLP, Computer Vision, Anomaly Detection</small></div>
+                    <div class="tech-item"><i class="fas fa-link"></i> Blockchain<br><small>Hyperledger / Polygon Edge</small></div>
+                    <div class="tech-item"><i class="fas fa-mobile-alt"></i> Mobile App<br><small>React Native / Flutter</small></div>
+                    <div class="tech-item"><i class="fas fa-desktop"></i> Web Dashboard<br><small>React / Vue.js</small></div>
+                    <div class="tech-item"><i class="fas fa-cloud"></i> Cloud Infrastructure<br><small>AWS / GCP / Azure</small></div>
+                    <div class="tech-item"><i class="fas fa-lock"></i> Security APIs<br><small>Threat Intelligence Integration</small></div>
                 </div>
             </div>
         </div>
@@ -373,13 +545,72 @@
             </div>
         </div>
 
+        <div class="comparison-section">
+            <h2 class="section-title">Why SafeGuard AI is Better Than Current Solutions</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>SafeGuard AI</th>
+                        <th>Airtel SafePay</th>
+                        <th>Truecaller</th>
+                        <th>Bank Alerts</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>360° Multi-Channel Protection</td>
+                        <td class="checkmark">✓</td>
+                        <td class="crossmark">✗ (UPI only)</td>
+                        <td class="crossmark">✗ (Calls only)</td>
+                        <td class="crossmark">✗ (Bank-specific)</td>
+                    </tr>
+                    <tr>
+                        <td>Proactive Fraud Prevention</td>
+                        <td class="checkmark">✓</td>
+                        <td class="crossmark">✗ (Limited)</td>
+                        <td class="crossmark">✗ (Reactive)</td>
+                        <td class="crossmark">✗ (Post-transaction)</td>
+                    </tr>
+                    <tr>
+                        <td>Cross-Platform Integration</td>
+                        <td class="checkmark">✓</td>
+                        <td class="crossmark">✗ (Airtel only)</td>
+                        <td class="crossmark">✗ (Limited)</td>
+                        <td class="crossmark">✗ (Bank-specific)</td>
+                    </tr>
+                    <tr>
+                        <td>Blockchain Evidence Logging</td>
+                        <td class="checkmark">✓</td>
+                        <td class="crossmark">✗</td>
+                        <td class="crossmark">✗</td>
+                        <td class="crossmark">✗</td>
+                    </tr>
+                    <tr>
+                        <td>Community-Driven Intelligence</td>
+                        <td class="checkmark">✓</td>
+                        <td class="crossmark">✗</td>
+                        <td class="checkmark">✓ (Limited)</td>
+                        <td class="crossmark">✗</td>
+                    </tr>
+                    <tr>
+                        <td>International Threat Defense</td>
+                        <td class="checkmark">✓</td>
+                        <td class="crossmark">✗</td>
+                        <td class="crossmark">✗</td>
+                        <td class="crossmark">✗</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
         <div class="team-section">
-            <h2 style="text-align: center; color: #2d3748; margin-bottom: 10px; font-size: 2.2rem;">🏆 Team Roles & Responsibilities</h2>
+            <h2 class="section-title">Team Roles & Responsibilities</h2>
             <p style="text-align: center; color: #666; margin-bottom: 30px;">24-Hour Hackathon Sprint Team</p>
             
             <div class="team-grid">
                 <div class="team-member">
-                    <div class="member-role">🚀 Backend Developer</div>
+                    <div class="member-role"><i class="fas fa-server"></i> Backend Developer</div>
                     <div class="member-tasks">
                         <h4>Core Responsibilities:</h4>
                         <ul>
@@ -396,7 +627,7 @@
                 </div>
 
                 <div class="team-member">
-                    <div class="member-role">⛓️ Blockchain Developer</div>
+                    <div class="member-role"><i class="fas fa-link"></i> Blockchain Developer</div>
                     <div class="member-tasks">
                         <h4>Core Responsibilities:</h4>
                         <ul>
@@ -413,7 +644,7 @@
                 </div>
 
                 <div class="team-member">
-                    <div class="member-role">📱 Frontend Developer</div>
+                    <div class="member-role"><i class="fas fa-mobile-alt"></i> Frontend Developer</div>
                     <div class="member-tasks">
                         <h4>Core Responsibilities:</h4>
                         <ul>
@@ -430,7 +661,7 @@
                 </div>
 
                 <div class="team-member">
-                    <div class="member-role">☁️ Cloud & Security</div>
+                    <div class="member-role"><i class="fas fa-cloud"></i> Cloud & Security</div>
                     <div class="member-tasks">
                         <h4>Core Responsibilities:</h4>
                         <ul>
@@ -449,12 +680,12 @@
         </div>
 
         <div class="timeline">
-            <h2>🕐 24-Hour Development Timeline</h2>
+            <h2 class="section-title">24-Hour Development Timeline</h2>
             
             <div class="timeline-item">
                 <div class="timeline-time">Hours 0-2</div>
                 <div class="timeline-content">
-                    <h3>🚀 Project Setup & Architecture</h3>
+                    <h3>Project Setup & Architecture</h3>
                     <p>Environment setup, repo creation, API design, database schema, blockchain network initialization</p>
                 </div>
             </div>
@@ -462,7 +693,7 @@
             <div class="timeline-item">
                 <div class="timeline-time">Hours 2-8</div>
                 <div class="timeline-content">
-                    <h3>🏗️ Core Development Phase</h3>
+                    <h3>Core Development Phase</h3>
                     <p>Backend APIs, smart contracts, mobile app UI, cloud infrastructure, basic AI models</p>
                 </div>
             </div>
@@ -470,7 +701,7 @@
             <div class="timeline-item">
                 <div class="timeline-time">Hours 8-16</div>
                 <div class="timeline-content">
-                    <h3>🔧 Feature Integration</h3>
+                    <h3>Feature Integration</h3>
                     <p>AI model training, blockchain integration, frontend-backend connection, security implementation</p>
                 </div>
             </div>
@@ -478,7 +709,7 @@
             <div class="timeline-item">
                 <div class="timeline-time">Hours 16-20</div>
                 <div class="timeline-content">
-                    <h3>🧪 Testing & Optimization</h3>
+                    <h3>Testing & Optimization</h3>
                     <p>End-to-end testing, performance optimization, bug fixes, demo data preparation</p>
                 </div>
             </div>
@@ -486,64 +717,79 @@
             <div class="timeline-item">
                 <div class="timeline-time">Hours 20-24</div>
                 <div class="timeline-content">
-                    <h3>📊 Demo Preparation</h3>
+                    <h3>Demo Preparation</h3>
                     <p>Presentation slides, live demo setup, pitch practice, final deployment</p>
                 </div>
             </div>
         </div>
 
-        <div class="demo-section">
-            <h2>🎯 Live Demo Features</h2>
-            <p>What we'll showcase in our 24-hour prototype:</p>
+        <div class="demo-section" id="demo">
+            <h2 class="section-title">Live Demo Features</h2>
+            <p style="text-align: center; margin-bottom: 30px;">What we'll showcase in our 24-hour prototype</p>
             
             <div class="demo-features">
                 <div class="demo-feature">
-                    <h3>📱 Mobile App</h3>
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>Mobile App</h3>
                     <p>SMS scanner that detects scam messages in real-time</p>
                 </div>
                 <div class="demo-feature">
-                    <h3>📸 QR Scanner</h3>
+                    <i class="fas fa-qrcode"></i>
+                    <h3>QR Scanner</h3>
                     <p>QR code analysis that flags fake UPI IDs</p>
                 </div>
                 <div class="demo-feature">
-                    <h3>🚨 Fraud Alerts</h3>
+                    <i class="fas fa-bell"></i>
+                    <h3>Fraud Alerts</h3>
                     <p>Real-time notifications for detected threats</p>
                 </div>
                 <div class="demo-feature">
-                    <h3>⛓️ Blockchain Registry</h3>
+                    <i class="fas fa-link"></i>
+                    <h3>Blockchain Registry</h3>
                     <p>Tamper-proof fraud case logging system</p>
                 </div>
                 <div class="demo-feature">
-                    <h3>📊 Analytics Dashboard</h3>
+                    <i class="fas fa-chart-bar"></i>
+                    <h3>Analytics Dashboard</h3>
                     <p>Real-time fraud statistics and trends</p>
                 </div>
                 <div class="demo-feature">
-                    <h3>👥 Community Reports</h3>
+                    <i class="fas fa-users"></i>
+                    <h3>Community Reports</h3>
                     <p>User-generated fraud case submissions</p>
                 </div>
             </div>
         </div>
 
-        <div class="card full-width" style="background: linear-gradient(135deg, #4ecdc4, #44bd32); color: white; text-align: center;">
-            <h2 style="color: white; margin-bottom: 20px;">🏆 Why We'll Win This Hackathon</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px;">
-                <div>
-                    <h3>💡 Real Problem</h3>
+        <div class="card full-width" style="background: var(--gradient); color: white; text-align: center;">
+            <h2 style="color: white; margin-bottom: 20px;">Why We'll Win This Hackathon</h2>
+            <div class="feature-grid">
+                <div class="feature-item" style="background: rgba(255,255,255,0.15); color: white;">
+                    <i class="fas fa-lightbulb"></i>
+                    <h3>Real Problem</h3>
                     <p>Addresses India's ₹1000+ crore fraud crisis</p>
                 </div>
-                <div>
-                    <h3>🚀 Innovation</h3>
+                <div class="feature-item" style="background: rgba(255,255,255,0.15); color: white;">
+                    <i class="fas fa-rocket"></i>
+                    <h3>Innovation</h3>
                     <p>First 360° AI + Blockchain fraud solution</p>
                 </div>
-                <div>
-                    <h3>📈 Scalability</h3>
+                <div class="feature-item" style="background: rgba(255,255,255,0.15); color: white;">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Scalability</h3>
                     <p>Can protect millions of users nationally</p>
                 </div>
-                <div>
-                    <h3>🏛️ Impact</h3>
+                <div class="feature-item" style="background: rgba(255,255,255,0.15); color: white;">
+                    <i class="fas fa-handshake"></i>
+                    <h3>Impact</h3>
                     <p>Aligns with government Digital India mission</p>
                 </div>
             </div>
+        </div>
+
+        <div class="footer">
+            <p>SafeGuard AI - Protecting India's Digital Future</p>
+            <p>© 2023 SafeGuard AI Team. All rights reserved.</p>
         </div>
     </div>
 
@@ -566,7 +812,7 @@
             }, observerOptions);
 
             // Observe all cards
-            document.querySelectorAll('.card, .team-member, .timeline-item').forEach(el => {
+            document.querySelectorAll('.card, .team-member, .timeline-item, .demo-feature, .feature-item, .stat-card').forEach(el => {
                 el.style.opacity = '0';
                 el.style.transform = 'translateY(30px)';
                 el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
@@ -580,6 +826,14 @@
                     setTimeout(() => {
                         this.style.transform = 'translateY(-8px) scale(1)';
                     }, 150);
+                });
+            });
+
+            // Smooth scrolling for CTA button
+            document.querySelector('.cta-button').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector('#demo').scrollIntoView({
+                    behavior: 'smooth'
                 });
             });
         });
