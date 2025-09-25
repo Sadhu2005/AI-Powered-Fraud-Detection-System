@@ -1,0 +1,111 @@
+version: '3.8'
+
+services:
+  # Backend API Service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: safeguard-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=development
+      - DATABASE_URL=sqlite:///./fraud_detection.db
+      - BLOCKCHAIN_NETWORK=local
+    volumes:
+      - ./backend:/app
+      - ./blockchain:/app/blockchain
+    depends_on:
+      - database
+    networks:
+      - safeguard-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Frontend Service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: safeguard-frontend
+    ports:
+      - "3000:80"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+    depends_on:
+      - backend
+    networks:
+      - safeguard-network
+    restart: unless-stopped
+
+  # Database Service (SQLite for local development)
+  database:
+    image: alpine:latest
+    container_name: safeguard-database
+    volumes:
+      - ./data:/data
+    networks:
+      - safeguard-network
+    restart: unless-stopped
+    command: sh -c "mkdir -p /data && touch /data/fraud_detection.db && tail -f /dev/null"
+
+  # Blockchain Service (Local blockchain for development)
+  blockchain:
+    image: node:18-alpine
+    container_name: safeguard-blockchain
+    ports:
+      - "8545:8545"
+    volumes:
+      - ./blockchain:/app
+    working_dir: /app
+    command: >
+      sh -c "
+        npm install -g ganache-cli &&
+        ganache-cli --port 8545 --host 0.0.0.0 --accounts 10 --deterministic --gasLimit 6721975
+      "
+    networks:
+      - safeguard-network
+    restart: unless-stopped
+
+  # Redis for caching (optional)
+  redis:
+    image: redis:7-alpine
+    container_name: safeguard-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - safeguard-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
+  # Nginx Reverse Proxy (for production-like setup)
+  nginx:
+    image: nginx:alpine
+    container_name: safeguard-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - safeguard-network
+    restart: unless-stopped
+
+volumes:
+  redis_data:
+    driver: local
+
+networks:
+  safeguard-network:
+    driver: bridge

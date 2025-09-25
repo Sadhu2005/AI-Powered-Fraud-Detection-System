@@ -1,0 +1,17 @@
+{
+  "chain": [],
+  "pending_transactions": [],
+  "network_info": {
+    "name": "SafeGuard AI Fraud Registry",
+    "version": "1.0.0",
+    "genesis_timestamp": "2023-01-01T00:00:00Z",
+    "difficulty": 4,
+    "mining_reward": 0
+  },
+  "stats": {
+    "total_blocks": 0,
+    "total_transactions": 0,
+    "fraud_reports": 0,
+    "predictions": 0
+  }
+}

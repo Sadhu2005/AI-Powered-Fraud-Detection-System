@@ -1,0 +1,142 @@
+version: '3.8'
+
+services:
+  # Test Backend
+  backend-test:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: safeguard-backend-test
+    environment:
+      - ENVIRONMENT=testing
+      - DATABASE_URL=sqlite:///./test_fraud_detection.db
+      - BLOCKCHAIN_NETWORK=test
+    volumes:
+      - ./backend:/app
+      - ./blockchain:/app/blockchain
+    command: >
+      sh -c "
+        pip install pytest pytest-cov &&
+        pytest tests/ -v --cov=app --cov-report=xml --cov-report=html
+      "
+    networks:
+      - test-network
+
+  # Test Frontend
+  frontend-test:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: safeguard-frontend-test
+    environment:
+      - REACT_APP_API_URL=http://backend-test:8000
+    command: >
+      sh -c "
+        npm install &&
+        npm test -- --coverage --watchAll=false
+      "
+    depends_on:
+      - backend-test
+    networks:
+      - test-network
+
+  # Test Database
+  database-test:
+    image: postgres:15-alpine
+    container_name: safeguard-database-test
+    environment:
+      - POSTGRES_DB=test_fraud_detection
+      - POSTGRES_USER=test_user
+      - POSTGRES_PASSWORD=test_password
+    volumes:
+      - test_postgres_data:/var/lib/postgresql/data
+    networks:
+      - test-network
+
+  # Test Blockchain
+  blockchain-test:
+    image: node:18-alpine
+    container_name: safeguard-blockchain-test
+    volumes:
+      - ./blockchain:/app
+    working_dir: /app
+    command: >
+      sh -c "
+        npm install -g ganache-cli &&
+        ganache-cli --port 8545 --host 0.0.0.0 --accounts 5 --deterministic --gasLimit 6721975
+      "
+    networks:
+      - test-network
+
+  # Integration Tests
+  integration-test:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: safeguard-integration-test
+    environment:
+      - ENVIRONMENT=testing
+      - DATABASE_URL=postgresql://test_user:test_password@database-test:5432/test_fraud_detection
+      - BLOCKCHAIN_NETWORK=test
+    volumes:
+      - ./backend:/app
+      - ./blockchain:/app/blockchain
+    command: >
+      sh -c "
+        pip install pytest pytest-asyncio &&
+        pytest tests/test_integration.py -v
+      "
+    depends_on:
+      - backend-test
+      - database-test
+      - blockchain-test
+    networks:
+      - test-network
+
+  # Performance Tests
+  performance-test:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: safeguard-performance-test
+    environment:
+      - ENVIRONMENT=testing
+      - DATABASE_URL=sqlite:///./test_fraud_detection.db
+    volumes:
+      - ./backend:/app
+    command: >
+      sh -c "
+        pip install locust &&
+        locust -f tests/performance/locustfile.py --host=http://backend-test:8000 --users=100 --spawn-rate=10 --run-time=60s --headless
+      "
+    depends_on:
+      - backend-test
+    networks:
+      - test-network
+
+  # Security Tests
+  security-test:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: safeguard-security-test
+    environment:
+      - ENVIRONMENT=testing
+    volumes:
+      - ./backend:/app
+    command: >
+      sh -c "
+        pip install bandit safety &&
+        bandit -r app/ -f json -o bandit-report.json &&
+        safety check --json --output safety-report.json
+      "
+    networks:
+      - test-network
+
+volumes:
+  test_postgres_data:
+    driver: local
+
+networks:
+  test-network:
+    driver: bridge
